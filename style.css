@@ -48,3 +48,17 @@
     transform: scale(1.1);
     box-shadow: 0 0 20px rgba(241, 196, 15, 0.6);
 }
+
+#score-container {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #f1c40f;
+}
+
+/* 捨てられた牌を薄くする、または消すアニメーション */
+.tile.discarded {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: 0.3s;
+    pointer-events: none;
+}
