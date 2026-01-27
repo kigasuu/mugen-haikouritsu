@@ -1,0 +1,8 @@
+body { background: #222; color: white; text-align: center; font-family: sans-serif; }
+.hand { display: flex; justify-content: center; gap: 4px; margin: 20px; min-height: 100px; }
+.tile {
+    width: 40px; height: 60px; background: white; color: black;
+    border-radius: 4px; display: flex; align-items: center;
+    justify-content: center; font-weight: bold; font-size: 20px;
+}
+button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
