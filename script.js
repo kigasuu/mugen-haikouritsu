@@ -35,6 +35,10 @@ function generateHand() {
     hand.sort((a, b) => (a.suit !== b.suit) ? SUITS.indexOf(a.suit) - SUITS.indexOf(b.suit) : a.num - b.num);
     currentHand = hand;
     displayHand(hand);
+    
+    const genBtn = document.getElementById('generate-btn');
+    genBtn.textContent = "新しい問題を生成";
+    genBtn.classList.remove('highlight');
     document.getElementById('result').textContent = "牌を選んで切ってください";
 }
 
@@ -53,91 +57,91 @@ function displayHand(hand) {
     });
 }
 
-// 簡易シャンテン数計算（数牌のみ・1シャンテン問題用）
 function getShanten(hand) {
-    let count = 0;
     const counts = { m: Array(10).fill(0), p: Array(10).fill(0), s: Array(10).fill(0) };
     hand.forEach(t => counts[t.suit][t.num]++);
-
     let maxMelds = 0;
-    function backtrack(h, m, t) {
+
+    function backtrack(m, t) {
         maxMelds = Math.max(maxMelds, m + t / 2);
         for (let s of SUITS) {
             for (let i = 1; i <= 9; i++) {
-                if (counts[s][i] >= 3) { // 刻子
-                    counts[s][i] -= 3; backtrack(h, m + 1, t); counts[s][i] += 3;
+                if (counts[s][i] >= 3) {
+                    counts[s][i] -= 3; backtrack(m + 1, t); counts[s][i] += 3;
                 }
-                if (i <= 7 && counts[s][i] > 0 && counts[s][i+1] > 0 && counts[s][i+2] > 0) { // 順子
+                if (i <= 7 && counts[s][i] > 0 && counts[s][i+1] > 0 && counts[s][i+2] > 0) {
                     counts[s][i]--; counts[s][i+1]--; counts[s][i+2]--;
-                    backtrack(h, m + 1, t);
+                    backtrack(m + 1, t);
                     counts[s][i]++; counts[s][i+1]++; counts[s][i+2]++;
                 }
             }
         }
     }
-    // 雀頭抜き出し
+
     for (let s of SUITS) {
         for (let i = 1; i <= 9; i++) {
             if (counts[s][i] >= 2) {
-                counts[s][i] -= 2; backtrack(hand, 0, 1); counts[s][i] += 2;
+                counts[s][i] -= 2; backtrack(0, 1); counts[s][i] += 2;
             }
         }
     }
-    backtrack(hand, 0, 0);
-    return 8 - (maxMelds * 2); // 簡易式
+    backtrack(0, 0);
+    return 8 - (maxMelds * 2);
 }
 
-function discardTile(index) {
-    const baseShanten = getShanten(currentHand);
-    const newHand = currentHand.filter((_, i) => i !== index);
-    const newShanten = getShanten(newHand);
-
-    if (newShanten > baseShanten) {
-        document.getElementById('result').textContent = "不正解：向聴数が戻りました";
-    } else {
-        document.getElementById('result').textContent = "正解！次の問題へどうぞ";
+// 受け入れ枚数を計算する関数
+function countUkeire(hand) {
+    if (hand.length !== 13) return 0;
+    let ukeire = 0;
+    const suits = ['m', 'p', 's'];
+    for (let s of suits) {
+        for (let n = 1; n <= 9; n++) {
+            const tempHand = [...hand, { num: n, suit: s }];
+            if (getShanten(tempHand) < getShanten(hand)) {
+                // 場に出ている枚数（手牌にある枚数）を考慮
+                const alreadyHave = hand.filter(t => t.num === n && t.suit === s).length;
+                ukeire += (4 - alreadyHave);
+            }
+        }
     }
-}
-
-document.getElementById('generate-btn').addEventListener('click', generateHand);
-generateHand();
-
-function displayHand(hand) {
-    const display = document.getElementById('hand-display');
-    display.innerHTML = "";
-    hand.forEach((tile, index) => {
-        const tileDiv = document.createElement('div');
-        tileDiv.className = 'tile';
-        if (tile.suit === 'm') tileDiv.style.color = 'red';
-        if (tile.suit === 'p') tileDiv.style.color = 'blue';
-        if (tile.suit === 's') tileDiv.style.color = 'green';
-        tileDiv.textContent = tile.num + tile.suit;
-        // クリックイベント
-        tileDiv.onclick = () => discardTile(index);
-        display.appendChild(tileDiv);
-    });
+    return ukeire;
 }
 
 function discardTile(index) {
-    // 既に判定済みなら何もしない
     if (document.getElementById('generate-btn').classList.contains('highlight')) return;
 
     const baseShanten = getShanten(currentHand);
     const discarded = currentHand[index];
     const newHand = currentHand.filter((_, i) => i !== index);
     const newShanten = getShanten(newHand);
+    
+    // 全ての打牌候補の受け入れ枚数を計算
+    let maxUkeire = 0;
+    const allOptions = currentHand.map((_, i) => {
+        const h = currentHand.filter((__, j) => i !== j);
+        const s = getShanten(h);
+        const u = (s === baseShanten) ? countUkeire(h) : -1;
+        if (u > maxUkeire) maxUkeire = u;
+        return u;
+    });
 
+    const userUkeire = allOptions[index];
     const resultDiv = document.getElementById('result');
     const genBtn = document.getElementById('generate-btn');
 
     if (newShanten > baseShanten) {
         resultDiv.innerHTML = `<span style="color: #ff4444;">× 不正解（向聴戻り）</span><br><small>${discarded.num}${discarded.suit}を切るとシャンテン数が戻ります</small>`;
         genBtn.textContent = "もう一度挑戦";
-    } else {
-        resultDiv.innerHTML = `<span style="color: #44ff44;">★ 正解！</span><br><small>シャンテン数を維持しました</small>`;
+    } else if (userUkeire < maxUkeire) {
+        resultDiv.innerHTML = `<span style="color: #f1c40f;">▲ Good（正解）</span><br><small>受入: ${userUkeire}枚。最善手は ${maxUkeire}枚でした。</small>`;
         genBtn.textContent = "次の問題へ";
-        genBtn.classList.add('highlight'); // ボタンを強調
+        genBtn.classList.add('highlight');
+    } else {
+        resultDiv.innerHTML = `<span style="color: #44ff44;">★ Excellent（最善手）</span><br><small>受入最大: ${userUkeire}枚</small>`;
+        genBtn.textContent = "次の問題へ";
+        genBtn.classList.add('highlight');
     }
 }
 
-// (getShanten 関数等はそのまま)
+document.getElementById('generate-btn').addEventListener('click', generateHand);
+generateHand();
