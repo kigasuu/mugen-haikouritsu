@@ -50,8 +50,8 @@ function displayHand(hand) {
         tileDiv.className = 'tile';
         
         // --- 変更点：文字の代わりに画像を挿入 ---
-        const img = document.createElement('img');
-        img.src = `img/${tile.suit}${tile.num}.png`; // 例: img/m1.png
+       const img = document.createElement('img');
+img.src = `img/${tile.num}${tile.suit}.png`; // 例: img/m1.png
         img.alt = tile.num + tile.suit;
         img.style.width = "100%";
         img.style.height = "100%";
