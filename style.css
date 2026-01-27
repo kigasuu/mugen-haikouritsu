@@ -29,3 +29,25 @@
     transform: translateY(-5px);
     transition: 0.2s;
 }
+
+#result {
+    min-height: 60px; /* 表示領域を固定してガタつきを防ぐ */
+    line-height: 1.4;
+}
+
+#generate-btn {
+    background: #444;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+/* 正解時にボタンを光らせる */
+#generate-btn.highlight {
+    background: #f1c40f;
+    color: #000;
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(241, 196, 15, 0.6);
+}
