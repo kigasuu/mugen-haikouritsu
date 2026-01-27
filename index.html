@@ -5,19 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>無限・牌効率道場</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="app">
-    <h1>無限・牌効率道場</h1>
-    <div id="score-container">
-        <span>正解数: <span id="correct-score">0</span></span>
+    <div class="dojo-container">
+        <header>
+            <h1 class="dojo-title">無限・牌効率道場</h1>
+            <div id="score-container">
+                正解数: <span id="correct-score">0</span>
+            </div>
+        </header>
+
+        <main>
+            <div id="hand-display" class="hand"></div>
+            <div id="result"></div>
+        </main>
+
+        <footer>
+            <button id="generate-btn">次 の 問 題 ⚡</button>
+        </footer>
     </div>
-    <div id="hand-display" class="hand"></div>
-    <div id="result"></div>
-    <button id="generate-btn">新しい問題を生成</button>
-</div>
     <script src="script.js"></script>
 </body>
 </html>
-
-
