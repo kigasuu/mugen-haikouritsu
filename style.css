@@ -10,17 +10,14 @@
 .tile {
     width: 45px;
     height: 65px;
-    background: #fdfdfd;
-    color: #333;
-    border: 2px solid #000;
-    border-radius: 5px;
+    background: white; /* 牌の地の色 */
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    overflow: hidden; /* 画像がはみ出さないように */
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
-    font-size: 1.2rem;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
     cursor: pointer;
 }
 
