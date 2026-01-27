@@ -1,8 +1,31 @@
-body { background: #222; color: white; text-align: center; font-family: sans-serif; }
-.hand { display: flex; justify-content: center; gap: 4px; margin: 20px; min-height: 100px; }
-.tile {
-    width: 40px; height: 60px; background: white; color: black;
-    border-radius: 4px; display: flex; align-items: center;
-    justify-content: center; font-weight: bold; font-size: 20px;
+.hand {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin: 30px auto;
+    flex-wrap: wrap; /* スマホ対応 */
+    max-width: 90%;
 }
-button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+
+.tile {
+    width: 45px;
+    height: 65px;
+    background: #fdfdfd;
+    color: #333;
+    border: 2px solid #000;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    cursor: pointer;
+}
+
+.tile:hover {
+    background: #eee;
+    transform: translateY(-5px);
+    transition: 0.2s;
+}
