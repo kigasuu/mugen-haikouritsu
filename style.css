@@ -62,3 +62,106 @@
     transition: 0.3s;
     pointer-events: none;
 }
+/* 全体の背景：暗い和風の質感 */
+body {
+    background-color: #1a1a1a;
+    background-image: url('https://www.transparenttextures.com/patterns/dark-matter.png'); /* 微細な質感 */
+    color: #f1c40f; /* 金色風 */
+    font-family: 'Sawarabi Mincho', serif;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dojo-container {
+    width: 100%;
+    max-width: 1000px;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* タイトル：中央上 */
+header {
+    text-align: center;
+}
+
+.dojo-title {
+    font-size: 3rem;
+    margin: 0;
+    text-shadow: 3px 3px 0px #000, 0 0 20px #f1c40f;
+    letter-spacing: 0.5rem;
+}
+
+/* 牌のエリア：真ん中やや上 */
+.hand {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 40px auto;
+    perspective: 1000px;
+}
+
+.tile {
+    width: 55px; /* 少し大きく */
+    height: 80px;
+    background: #eee;
+    border-radius: 4px;
+    box-shadow: 0 5px 0 #bbb, 0 8px 15px rgba(0,0,0,0.5);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tile:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 0 #bbb, 0 15px 25px rgba(0,0,0,0.6);
+}
+
+/* ボタン：左下に大きく */
+footer {
+    display: flex;
+    justify-content: flex-start; /* 左寄せ */
+    padding-bottom: 30px;
+}
+
+#generate-btn {
+    padding: 20px 40px;
+    font-size: 1.8rem;
+    font-family: 'Sawarabi Mincho', serif;
+    background: #8e44ad; /* 重厚な紫 */
+    color: white;
+    border: 3px solid #f1c40f;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 10px 0 #5e2a73;
+    transition: 0.1s;
+}
+
+#generate-btn:active {
+    transform: translateY(5px);
+    box-shadow: 0 5px 0 #5e2a73;
+}
+
+#generate-btn.highlight {
+    background: #c0392b; /* 正解時は情熱の赤 */
+    box-shadow: 0 10px 0 #7b241c;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* 結果表示 */
+#result {
+    text-align: center;
+    font-size: 1.5rem;
+    height: 60px;
+}
