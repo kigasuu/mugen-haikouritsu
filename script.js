@@ -48,10 +48,17 @@ function displayHand(hand) {
     hand.forEach((tile, index) => {
         const tileDiv = document.createElement('div');
         tileDiv.className = 'tile';
-        if (tile.suit === 'm') tileDiv.style.color = 'red';
-        if (tile.suit === 'p') tileDiv.style.color = 'blue';
-        if (tile.suit === 's') tileDiv.style.color = 'green';
-        tileDiv.textContent = tile.num + tile.suit;
+        
+        // --- 変更点：文字の代わりに画像を挿入 ---
+        const img = document.createElement('img');
+        img.src = `img/${tile.suit}${tile.num}.png`; // 例: img/m1.png
+        img.alt = tile.num + tile.suit;
+        img.style.width = "100%";
+        img.style.height = "100%";
+        
+        tileDiv.appendChild(img);
+        // ------------------------------------
+
         tileDiv.onclick = () => discardTile(index);
         display.appendChild(tileDiv);
     });
