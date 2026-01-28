@@ -1,156 +1,155 @@
-.hand {
+:root {
+    --bg-green: #2c5e2e;
+    --bg-blue: #2c3e50;
+    --tile-bg: #f9f9f9;
+    --accent-yellow: #f1c40f;
+}
+
+body {
+    margin: 0;
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+.theme-green { background-color: var(--bg-green); }
+.theme-blue { background-color: var(--bg-blue); }
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 2px solid rgba(255,255,255,0.2);
+    padding-bottom: 10px;
+}
+
+.result-display {
+    min-height: 70px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+/* --- 牌の表示レイアウト（1行 or 7枚×2行） --- */
+.hand-flex {
     display: flex;
     justify-content: center;
-    gap: 5px;
-    margin: 30px auto;
-    flex-wrap: wrap; /* スマホ対応 */
-    max-width: 90%;
+    gap: 4px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .tile {
-    width: 45px;
-    height: 65px;
-    background: white; /* 牌の地の色 */
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    overflow: hidden; /* 画像がはみ出さないように */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    /* PC・タブレット：基本は1行14枚 */
+    flex: 0 0 calc(100% / 14 - 4px);
+    max-width: 65px;
     cursor: pointer;
+    transition: transform 0.2s, filter 0.2s;
+    padding: 12px 0; /* 当たり判定の拡大 */
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.tile img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
 }
 
 .tile:hover {
-    background: #eee;
-    transform: translateY(-5px);
-    transition: 0.2s;
+    transform: translateY(-15px);
+    filter: brightness(1.1);
 }
 
-#result {
-    min-height: 60px; /* 表示領域を固定してガタつきを防ぐ */
-    line-height: 1.4;
-}
-
-#generate-btn {
-    background: #444;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    transition: 0.3s;
-    font-weight: bold;
-}
-
-/* 正解時にボタンを光らせる */
-#generate-btn.highlight {
-    background: #f1c40f;
-    color: #000;
-    transform: scale(1.1);
-    box-shadow: 0 0 20px rgba(241, 196, 15, 0.6);
-}
-
-#score-container {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-    color: #f1c40f;
-}
-
-/* 捨てられた牌を薄くする、または消すアニメーション */
 .tile.discarded {
-    opacity: 0;
-    transform: translateY(-20px);
-    transition: 0.3s;
+    opacity: 0.3;
+    transform: translateY(20px) scale(0.9);
+    filter: grayscale(0.8);
     pointer-events: none;
 }
-/* 全体の背景：暗い和風の質感 */
-body {
-    background-color: #1a1a1a;
-    background-image: url('https://www.transparenttextures.com/patterns/dark-matter.png'); /* 微細な質感 */
-    color: #f1c40f; /* 金色風 */
-    font-family: 'Sawarabi Mincho', serif;
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+/* 幅が狭い時：7枚ずつ2行にする */
+@media (max-width: 850px) {
+    .hand-flex {
+        max-width: 520px;
+        gap: 6px;
+    }
+    .tile {
+        flex: 0 0 calc(100% / 7 - 6px);
+        padding: 15px 0;
+    }
 }
 
-.dojo-container {
+.analysis-section {
+    margin-top: 20px;
+    background: rgba(255,255,255,0.95);
+    color: #333;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.analysis-table {
     width: 100%;
-    max-width: 1000px;
-    height: 90vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 20px;
-    box-sizing: border-box;
+    border-collapse: collapse;
+    margin-top: 10px;
 }
 
-/* タイトル：中央上 */
-header {
+.analysis-table th, .analysis-table td {
+    padding: 10px 5px;
+    border-bottom: 1px solid #ddd;
     text-align: center;
 }
 
-.dojo-title {
-    font-size: 3rem;
-    margin: 0;
-    text-shadow: 3px 3px 0px #000, 0 0 20px #f1c40f;
-    letter-spacing: 0.5rem;
-}
+.analysis-table th { background: #eee; }
 
-/* 牌のエリア：真ん中やや上 */
-.hand {
+.ukeire-icons {
     display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
     justify-content: center;
-    gap: 8px;
-    margin: 40px auto;
-    perspective: 1000px;
 }
 
-.tile {
-    width: 55px; /* 少し大きく */
-    height: 80px;
-    background: #eee;
-    border-radius: 4px;
-    box-shadow: 0 5px 0 #bbb, 0 8px 15px rgba(0,0,0,0.5);
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.tile:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 0 #bbb, 0 15px 25px rgba(0,0,0,0.6);
-}
-
-/* ボタン：左下に大きく */
-footer {
+.action-area {
     display: flex;
-    justify-content: flex-start; /* 左寄せ */
-    padding-bottom: 30px;
+    justify-content: flex-end;
+    margin: 20px 0 40px 0;
 }
 
-#generate-btn {
-    padding: 20px 40px;
-    font-size: 1.8rem;
-    font-family: 'Sawarabi Mincho', serif;
-    background: #8e44ad; /* 重厚な紫 */
-    color: white;
-    border: 3px solid #f1c40f;
-    border-radius: 10px;
+.primary-btn {
+    padding: 15px 45px;
+    font-size: 1.2rem;
+    background-color: var(--accent-yellow);
+    color: #333;
+    border: none;
+    border-radius: 30px;
     cursor: pointer;
-    box-shadow: 0 10px 0 #5e2a73;
-    transition: 0.1s;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 
-#generate-btn:active {
-    transform: translateY(5px);
-    box-shadow: 0 5px 0 #5e2a73;
-}
-
-#generate-btn.highlight {
-    background: #c0392b; /* 正解時は情熱の赤 */
-    box-shadow: 0 10px 0 #7b241c;
+.primary-btn.highlight {
     animation: pulse 1.5s infinite;
+    background-color: #ffeb3b;
 }
 
 @keyframes pulse {
@@ -159,9 +158,11 @@ footer {
     100% { transform: scale(1); }
 }
 
-/* 結果表示 */
-#result {
-    text-align: center;
-    font-size: 1.5rem;
-    height: 60px;
+#theme-toggle {
+    padding: 5px 15px;
+    background: transparent;
+    border: 1px solid white;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
 }
