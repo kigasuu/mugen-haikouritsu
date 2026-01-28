@@ -1,168 +1,201 @@
 :root {
     --bg-green: #2c5e2e;
     --bg-blue: #2c3e50;
-    --tile-bg: #f9f9f9;
+    --header-dark: #1a1a1a;
+    /* ここが漏れていました */
     --accent-yellow: #f1c40f;
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --text-dark: #333;
 }
 
+/* 1. 卓（ボディ）の設定 */
 body {
     margin: 0;
-    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", sans-serif;
+    background-color: var(--bg-green);
+    /* 初期設定は緑 */
     color: white;
-    transition: background-color 0.3s;
+    line-height: 1.6;
+    transition: background-color 0.3s ease;
+    /* 色の変化を滑らかに */
+    min-height: 100vh;
 }
 
-.theme-green { background-color: var(--bg-green); }
-.theme-blue { background-color: var(--bg-blue); }
+/* 卓の色：青モード */
+body.theme-blue {
+    background-color: var(--bg-blue);
+}
+
+/* 2. ヘッダーの設定（常に黒・質感固定） */
+header {
+    /* bodyの背景色に影響されないよう、背景色と画像をここで強制固定します */
+    background-color: var(--header-dark) !important;
+    background-image: url('https://www.transparenttextures.com/patterns/dark-matter.png') !important;
+
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--accent-yellow);
+    flex-wrap: wrap;
+    gap: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+    /* 重なり順を安定させる */
+    z-index: 10;
+}
+
+header h1 {
+    margin: 0;
+    color: var(--accent-yellow);
+    font-family: 'Sawarabi Mincho', serif;
+    font-size: 1.8rem;
+    text-shadow: 1px 1px 2px black;
+}
+
+/* ナビゲーション（常に金文字） */
+.global-nav ul {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+.global-nav a {
+    color: var(--accent-yellow);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    font-family: 'Sawarabi Mincho', serif;
+}
+
+.global-nav a:hover {
+    background: rgba(255, 241, 196, 0.1);
+    color: #fff;
+}
+
+/* --- 以下、ゲームパーツ（変更なし） --- */
 
 .container {
     max-width: 1000px;
     margin: 0 auto;
-    padding: 10px;
-}
-
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    border-bottom: 2px solid rgba(255,255,255,0.2);
-    padding-bottom: 10px;
+    padding: 20px;
 }
 
 .result-display {
     min-height: 70px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    margin-bottom: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    margin-bottom: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    background: rgba(0,0,0,0.3);
-    border-radius: 10px;
+    font-weight: bold;
     padding: 10px;
 }
 
-/* --- 牌の表示レイアウト（1行 or 7枚×2行） --- */
 .hand-flex {
     display: flex;
     justify-content: center;
     gap: 4px;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
     flex-wrap: wrap;
-    max-width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .tile {
-    /* PC・タブレット：基本は1行14枚 */
     flex: 0 0 calc(100% / 14 - 4px);
     max-width: 65px;
     cursor: pointer;
-    transition: transform 0.2s, filter 0.2s;
-    padding: 12px 0; /* 当たり判定の拡大 */
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
+    padding: 12px 0;
+    transition: 0.2s;
 }
 
 .tile img {
     width: 100%;
-    height: auto;
-    display: block;
     border-radius: 4px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 .tile:hover {
-    transform: translateY(-15px);
-    filter: brightness(1.1);
+    transform: translateY(-10px);
 }
 
 .tile.discarded {
     opacity: 0.3;
-    transform: translateY(20px) scale(0.9);
-    filter: grayscale(0.8);
+    transform: translateY(20px);
     pointer-events: none;
 }
 
-/* 幅が狭い時：7枚ずつ2行にする */
 @media (max-width: 850px) {
     .hand-flex {
         max-width: 520px;
         gap: 6px;
     }
+
     .tile {
         flex: 0 0 calc(100% / 7 - 6px);
-        padding: 15px 0;
+    }
+
+    header {
+        justify-content: center;
     }
 }
 
-.analysis-section {
-    margin-top: 20px;
-    background: rgba(255,255,255,0.95);
-    color: #333;
+.analysis-section,
+.text-page-container {
+    background: var(--card-bg);
+    color: var(--text-dark);
     border-radius: 10px;
-    padding: 15px;
+    padding: 30px;
+    margin-top: 20px;
 }
 
 .analysis-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
 }
 
-.analysis-table th, .analysis-table td {
-    padding: 10px 5px;
+.analysis-table th,
+.analysis-table td {
+    padding: 10px;
     border-bottom: 1px solid #ddd;
     text-align: center;
 }
 
-.analysis-table th { background: #eee; }
+.primary-btn {
+    padding: 15px 45px;
+    background: var(--accent-yellow);
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
 
-.ukeire-icons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2px;
-    justify-content: center;
+.primary-btn.highlight {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 .action-area {
     display: flex;
     justify-content: flex-end;
-    margin: 20px 0 40px 0;
-}
-
-.primary-btn {
-    padding: 15px 45px;
-    font-size: 1.2rem;
-    background-color: var(--accent-yellow);
-    color: #333;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    font-weight: bold;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-}
-
-.primary-btn.highlight {
-    animation: pulse 1.5s infinite;
-    background-color: #ffeb3b;
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-#theme-toggle {
-    padding: 5px 15px;
-    background: transparent;
-    border: 1px solid white;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
+    margin-top: 20px;
 }

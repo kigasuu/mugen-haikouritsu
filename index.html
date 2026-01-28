@@ -1,40 +1,41 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>無限・牌効率道場 | 麻雀の牌効率・何切るを無限に練習</title>
-    <meta name="description" content="麻雀の牌効率をマスターするための練習ツール。実戦で迷いやすい複合形や多面張の何切る問題を無限に生成。道場形式で繰り返し解くことで打牌判断力を劇的に向上させます。">
+    <meta name="description" content="麻雀の牌効率をマスターするための練習ツール。実戦で迷いやすい複合形や多面張の何切る問題を無限に生成。">
     <meta name="keywords" content="麻雀,牌効率,何切る,麻雀練習,打牌判断,麻雀上達,牌効率道場">
-    
-    <meta property="og:title" content="無限・牌効率道場">
-    <meta property="og:description" content="牌効率を極める。実戦的な何切る問題を無限に解き続けよう。">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-    
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="theme-green">
-    <div class="container">
-        <header>
-            <h1>無限・牌効率道場</h1>
-            <div class="controls">
-                <button id="theme-toggle">背景色切替</button>
-                <div class="score-board">
-                    正解: <span id="correct-score">0</span> / 挑戦: <span id="total-count">0</span>
-                </div>
-            </div>
-        </header>
 
+<body class="theme-green">
+    <header>
+        <div class="header-left">
+            <h1>無限・牌効率道場</h1>
+        </div>
+        <nav class="global-nav">
+            <ul>
+                <li><a href="index.html">道場</a></li>
+                <li><a href="guide.html">心得</a></li>
+                <li><a href="patterns.html">研究</a></li>
+                <li><a href="about.html">案内</a></li>
+            </ul>
+        </nav>
+        <div class="controls">
+            <button id="theme-toggle">背景色切替</button>
+            <div class="score-board">
+                正解: <span id="correct-score">0</span> / 挑戦: <span id="total-count">0</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
         <main>
             <div id="result" class="result-display">牌を選んで切ってください</div>
-            
-            <div id="hand-display" class="hand-flex">
-                </div>
-
-            <div id="analysis-area" class="analysis-section">
-                </div>
-
+            <div id="hand-display" class="hand-flex"></div>
+            <div id="analysis-area" class="analysis-section"></div>
             <div class="action-area">
                 <button id="generate-btn" class="primary-btn">問題を生成</button>
             </div>
@@ -42,4 +43,5 @@
     </div>
     <script src="script.js"></script>
 </body>
+
 </html>
