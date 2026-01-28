@@ -5,21 +5,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>基本の心得 | 無限・牌効率道場</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body class="theme-green">
     <header>
-        <h1>無限・牌効率道場</h1>
-        <nav class="global-nav">
-            <ul>
-                <li><a href="index.html">道場</a></li>
-                <li><a href="guide.html">心得</a></li>
-                <li><a href="patterns.html">研究</a></li>
-                <li><a href="about.html">案内</a></li>
-            </ul>
-        </nav>
+        <div class="header-left">
+            <button id="menu-toggle" class="menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        <h1 class="center-title">無限・牌効率道場</h1>
+        <div class="controls">
+            <button id="theme-toggle">背景色切替</button>
+        </div>
     </header>
+
+    <nav id="side-menu" class="side-nav">
+        <div class="side-nav-header">
+            <h3>メニュー</h3>
+            <button id="menu-close" class="close-btn">&times;</button>
+        </div>
+        <ul>
+            <li><a href="index.html">道場 (練習)</a></li>
+            <li><a href="guide.html">心得 (基本)</a></li>
+            <li><a href="patterns.html">研究 (多面張)</a></li>
+            <li><a href="about.html">案内 (理念)</a></li>
+        </ul>
+    </nav>
+    <div id="menu-overlay" class="overlay"></div>
 
     <div class="container">
         <article class="text-page-container">
@@ -29,20 +46,18 @@
                 <p>麻雀において、相手のリーチ判断や点棒状況は常に変化する「不確定要素」です。しかし、自分の手牌における「受け入れ枚数」だけは、数学的に導き出される「確定要素」です。</p>
                 <p>当道場では、場の状況に惑わされる前に、まずは「形」としての正解を0.1秒で導き出せるまで叩き込むことを目的としています。</p>
             </section>
-
             <section>
                 <h3>初心者がまず覚えるべき「5ブロック理論」</h3>
                 <p>牌効率の基本は、14枚の手牌を「4メンツ＋1雀頭」の合計5つの塊（ブロック）として捉えることです。現在自分の手にいくつブロックがあるかを確認し、余計な牌から切っていく。これが最短でテンパイへ向かう唯一のルールです。
                 </p>
             </section>
-
             <section>
                 <h3>孤立牌の優先順位</h3>
-                <p>ブロックにもならない孤立した牌を捨てる際、基本となる序列があります。一般的に、内側の牌（3〜7）は両面になりやすいため最も価値が高く、端の牌（1・9）や字牌は価値が低いとされます。この基本を徹底することが、無駄のない手作りの第一歩です。
-                </p>
+                <p>ブロックにもならない孤立した牌を捨てる際、基本となる序列があります。一般的に、内側の牌（3〜7）は両面になりやすいため最も価値が高く、端の牌（1・9）や字牌は価値が低いとされます。</p>
             </section>
         </article>
     </div>
+    <script src="script.js"></script>
 </body>
 
 </html>

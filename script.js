@@ -13,6 +13,9 @@ let correctCount = 0;
 let totalCount = 0;
 
 function generateHand() {
+    const handDisplay = document.getElementById('hand-display');
+    if (!handDisplay) return; // 練習用要素がないページでは実行しない
+
     let hand = [];
     let shanten = -1;
     while (shanten !== 1) {
@@ -88,7 +91,7 @@ function getShanten(hand) {
 
 function getUkeireDetails(hand) {
     let tiles = [];
-    let totalCount = 0;
+    let totalUkeire = 0;
     const currentShanten = getShanten(hand);
     for (let s of SUITS) {
         for (let n = 1; n <= 9; n++) {
@@ -97,12 +100,12 @@ function getUkeireDetails(hand) {
                 const alreadyHave = hand.filter(t => t.num === n && t.suit === s).length;
                 if (4 - alreadyHave > 0) {
                     tiles.push({ num: n, suit: s, count: 4 - alreadyHave });
-                    totalCount += (4 - alreadyHave);
+                    totalUkeire += (4 - alreadyHave);
                 }
             }
         }
     }
-    return { tiles, totalCount };
+    return { tiles, totalCount: totalUkeire };
 }
 
 function discardTile(index) {
@@ -113,7 +116,6 @@ function discardTile(index) {
     const baseShanten = getShanten(currentHand);
     const userDiscard = currentHand[index];
 
-    // 全ての打牌パターンを計算
     const allAnalysis = currentHand.map((tile, i) => {
         const nextHand = currentHand.filter((_, j) => i !== j);
         const nextShanten = getShanten(nextHand);
@@ -121,10 +123,8 @@ function discardTile(index) {
         return { tile, nextShanten, ukeire };
     });
 
-    // 牌の種類ごとに集約（同じ牌なら結果は同じなので1つにまとめる）
     const uniqueAnalysis = [];
     const seenTiles = new Set();
-
     allAnalysis.forEach(d => {
         const tileId = `${d.tile.num}${d.tile.suit}`;
         if (!seenTiles.has(tileId)) {
@@ -137,7 +137,6 @@ function discardTile(index) {
     const userData = allAnalysis[index];
     const resultDiv = document.getElementById('result');
 
-    // 結果表示（上部のメッセージエリア）
     if (userData.nextShanten > baseShanten) {
         resultDiv.innerHTML = `<span style="color: #ff4444;">× 向聴戻り</span>`;
     } else {
@@ -152,15 +151,17 @@ function discardTile(index) {
         resultDiv.innerHTML = st;
     }
 
-    // 解析テーブルの生成（重複カット版）
     let tableHtml = `<h3>打牌解析一覧</h3><table class="analysis-table"><tr><th>打牌</th><th>状態</th><th>受入</th><th>有効牌</th></tr>`;
-
     uniqueAnalysis.forEach(d => {
         const isBest = d.ukeire && d.ukeire.totalCount === maxUkeire;
         tableHtml += `<tr style="${isBest ? 'background: rgba(68,255,68,0.2); font-weight:bold;' : ''}">
-            <td><img src="img/${d.tile.num}${d.tile.suit}.png" style="height:60px;"></td> <td>${d.nextShanten > baseShanten ? '<span style="color:red">向聴戻り</span>' : '維持'}</td>
+            <td><img src="img/${d.tile.num}${d.tile.suit}.png" style="height:60px;"></td>
+            <td>${d.nextShanten > baseShanten ? '<span style="color:red">向聴戻り</span>' : '維持'}</td>
             <td>${d.ukeire ? d.ukeire.totalCount + '枚' : "-"}</td>
-            <td class="ukeire-tiles-cell"> ${d.ukeire ? d.ukeire.tiles.map(t => `<img src="img/${t.num}${t.suit}.png" class="ukeire-tile-img">`).join('') : "-"}
+            <td class="ukeire-tiles-cell">
+                <div class="ukeire-wrapper">
+                    ${d.ukeire ? d.ukeire.tiles.map(t => `<img src="img/${t.num}${t.suit}.png" class="ukeire-tile-img">`).join('') : "-"}
+                </div>
             </td></tr>`;
     });
 
@@ -174,6 +175,7 @@ function discardTile(index) {
 
 function displayHand(hand) {
     const display = document.getElementById('hand-display');
+    if (!display) return;
     display.innerHTML = "";
     hand.forEach((tile, index) => {
         const tileDiv = document.createElement('div');
@@ -184,9 +186,33 @@ function displayHand(hand) {
     });
 }
 
-document.getElementById('generate-btn').addEventListener('click', generateHand);
-document.getElementById('theme-toggle').addEventListener('click', () => {
+// イベントリスナー
+document.getElementById('generate-btn')?.addEventListener('click', generateHand);
+document.getElementById('theme-toggle')?.addEventListener('click', () => {
     document.body.classList.toggle('theme-green');
     document.body.classList.toggle('theme-blue');
 });
-generateHand();
+
+// サイドメニュー開閉
+const menuToggle = document.getElementById('menu-toggle');
+const menuClose = document.getElementById('menu-close');
+const sideMenu = document.getElementById('side-menu');
+const overlay = document.getElementById('menu-overlay');
+
+menuToggle?.addEventListener('click', () => {
+    sideMenu.classList.add('open');
+    overlay.classList.add('show');
+});
+
+const closeMenu = () => {
+    sideMenu.classList.remove('open');
+    overlay.classList.remove('show');
+};
+
+menuClose?.addEventListener('click', closeMenu);
+overlay?.addEventListener('click', closeMenu);
+
+// 初期実行
+if (document.getElementById('hand-display')) {
+    generateHand();
+}

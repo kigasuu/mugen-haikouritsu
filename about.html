@@ -4,45 +4,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>道場案内 | 無限・牌効率道場</title>
+    <title>形の研究 | 無限・牌効率道場</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body class="theme-green">
     <header>
-        <h1>無限・牌効率道場</h1>
-        <nav class="global-nav">
-            <ul>
-                <li><a href="index.html">道場</a></li>
-                <li><a href="guide.html">心得</a></li>
-                <li><a href="patterns.html">研究</a></li>
-                <li><a href="about.html">案内</a></li>
-            </ul>
-        </nav>
+        <div class="header-left">
+            <button id="menu-toggle" class="menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        <h1 class="center-title">無限・牌効率道場</h1>
+        <div class="controls">
+            <button id="theme-toggle">背景色切替</button>
+        </div>
     </header>
+
+    <nav id="side-menu" class="side-nav">
+        <div class="side-nav-header">
+            <h3>メニュー</h3>
+            <button id="menu-close" class="close-btn">&times;</button>
+        </div>
+        <ul>
+            <li><a href="index.html">道場 (練習)</a></li>
+            <li><a href="guide.html">心得 (基本)</a></li>
+            <li><a href="patterns.html">研究 (多面張)</a></li>
+            <li><a href="about.html">案内 (理念)</a></li>
+        </ul>
+    </nav>
+    <div id="menu-overlay" class="overlay"></div>
 
     <div class="container">
         <article class="text-page-container">
-            <h2>当道場について</h2>
+            <h2>複合形の研究：形を知識でねじ伏せる</h2>
             <section>
-                <h3>運営理念</h3>
-                <p>「無限・牌効率道場」は、麻雀の基礎体力である「牌効率」を、何切る問題を通じて無限にトレーニングできる場を提供するために制作されました。複合形や多面張を「直感」で理解できるまでサポートします。</p>
+                <h3>【3枚構成】リャンカン・トイツ隣</h3>
+                <p><strong>リャンカン（1-3-5）:</strong> カンチャンが2つ重なった形。2と4の両方でメンツになります。</p>
+                <p><strong>トイツ＋隣（3-3-4）:</strong> 雀頭候補と両面の複合。非常に強力で、2-5を引けば順子が完成し、3を引けば暗刻になります。</p>
             </section>
-
             <section>
-                <h3>プライバシーポリシー</h3>
-                <p>当サイトでは、利用状況の分析のためにCookieを使用しています。また、第三者配信の広告サービス（Google
-                    AdSense等）を利用する場合があります。これらのサービスは広告配信の最適化のために、Cookieを使用してサイト訪問者の情報を収集することがあります。</p>
-                <p>ユーザーの練習データ（最高スコア等）はブラウザのLocalStorageに保存されます。これらはユーザーの端末内にのみ存在し、サーバーへ送信されることはありません。</p>
+                <h3>【4枚構成】4連形・中膨れ</h3>
+                <p><strong>4連形（3-4-5-6）:</strong> 最強の4枚形です。2-5、4-7の両面待ちを同時にカバーします。</p>
+                <p><strong>中膨れ（3-4-4-5）:</strong> 順子の真ん中が重なった形。3-6の両面に加え、4を引いても強い形が残るため、安易に切ってはいけません。</p>
             </section>
-
             <section>
-                <h3>お問い合わせ</h3>
-                <p>不具合の報告、改善の要望、または感想などは下記までお寄せください。皆様の声が道場の進化に繋がります。</p>
-                <p>SNS: <a href="#">X (旧Twitter) アカウントはこちら</a></p>
+                <h3>【5枚構成】多面張への入り口</h3>
+                <p><strong>暗刻＋両面（2-2-2-3-4）:</strong> 暗刻の隣に両面がある形。2-5待ちに加え、2を引いても雀頭＋順子の形として機能します。</p>
+                <p><strong>暗刻＋カンチャン（2-2-2-3-5）:</strong> 4待ちですが、2を引いても完成する柔軟な形です。</p>
             </section>
+            <p>※これらの形を瞬時に見抜けるようになるまで、道場で繰り返し練習しましょう。</p>
         </article>
     </div>
+    <script src="script.js"></script>
 </body>
 
 </html>
