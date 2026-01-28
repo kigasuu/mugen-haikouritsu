@@ -1,37 +1,32 @@
+/* --- 変数定義 --- */
 :root {
     --bg-green: #2c5e2e;
     --bg-blue: #2c3e50;
     --header-dark: #1a1a1a;
-    /* ここが漏れていました */
     --accent-yellow: #f1c40f;
     --card-bg: rgba(255, 255, 255, 0.95);
     --text-dark: #333;
 }
 
-/* 1. 卓（ボディ）の設定 */
+/* --- 1. 全体背景（卓部分） --- */
 body {
     margin: 0;
     font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", sans-serif;
     background-color: var(--bg-green);
-    /* 初期設定は緑 */
     color: white;
     line-height: 1.6;
     transition: background-color 0.3s ease;
-    /* 色の変化を滑らかに */
     min-height: 100vh;
 }
 
-/* 卓の色：青モード */
 body.theme-blue {
     background-color: var(--bg-blue);
 }
 
-/* 2. ヘッダーの設定（常に黒・質感固定） */
+/* --- 2. ヘッダー（常に黒・和紙質感で固定） --- */
 header {
-    /* bodyの背景色に影響されないよう、背景色と画像をここで強制固定します */
     background-color: var(--header-dark) !important;
     background-image: url('https://www.transparenttextures.com/patterns/dark-matter.png') !important;
-
     padding: 15px 30px;
     display: flex;
     justify-content: space-between;
@@ -41,7 +36,6 @@ header {
     gap: 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     position: relative;
-    /* 重なり順を安定させる */
     z-index: 10;
 }
 
@@ -53,7 +47,6 @@ header h1 {
     text-shadow: 1px 1px 2px black;
 }
 
-/* ナビゲーション（常に金文字） */
 .global-nav ul {
     display: flex;
     list-style: none;
@@ -76,10 +69,16 @@ header h1 {
 .global-nav a:hover {
     background: rgba(255, 241, 196, 0.1);
     color: #fff;
+    transform: scale(1.05);
 }
 
-/* --- 以下、ゲームパーツ（変更なし） --- */
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
 
+/* --- 3. メインコンテンツ --- */
 .container {
     max-width: 1000px;
     margin: 0 auto;
@@ -96,6 +95,7 @@ header h1 {
     justify-content: center;
     font-weight: bold;
     padding: 10px;
+    text-align: center;
 }
 
 .hand-flex {
@@ -130,21 +130,7 @@ header h1 {
     pointer-events: none;
 }
 
-@media (max-width: 850px) {
-    .hand-flex {
-        max-width: 520px;
-        gap: 6px;
-    }
-
-    .tile {
-        flex: 0 0 calc(100% / 7 - 6px);
-    }
-
-    header {
-        justify-content: center;
-    }
-}
-
+/* --- 4. 打牌解析テーブル（レイアウト修正版） --- */
 .analysis-section,
 .text-page-container {
     background: var(--card-bg);
@@ -152,28 +138,67 @@ header h1 {
     border-radius: 10px;
     padding: 30px;
     margin-top: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .analysis-table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: auto;
+    /* 列幅を内容に合わせる */
 }
 
-.analysis-table th,
+.analysis-table th {
+    background-color: #f8f9fa;
+    padding: 12px;
+    border-bottom: 2px solid #dee2e6;
+}
+
 .analysis-table td {
-    padding: 10px;
+    padding: 12px 8px;
     border-bottom: 1px solid #ddd;
     text-align: center;
+    vertical-align: middle;
 }
 
+/* 有効牌セルの配置崩れ防止 */
+.ukeire-tiles-cell {
+    text-align: left !important;
+    padding: 10px !important;
+}
+
+/* 有効牌を包むコンテナ */
+.ukeire-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-content: flex-start;
+}
+
+/* 有効牌の画像サイズ設定 */
+.ukeire-tile-img {
+    height: 48px;
+    vertical-align: middle;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+}
+
+/* --- 5. ボタン・アクション --- */
 .primary-btn {
     padding: 15px 45px;
     background: var(--accent-yellow);
     border: none;
     border-radius: 30px;
     font-weight: bold;
+    font-size: 1.1rem;
     cursor: pointer;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: 0.2s;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
 }
 
 .primary-btn.highlight {
@@ -198,4 +223,21 @@ header h1 {
     display: flex;
     justify-content: flex-end;
     margin-top: 20px;
+}
+
+/* --- 6. レスポンシブ設定 --- */
+@media (max-width: 850px) {
+    .hand-flex {
+        max-width: 520px;
+        gap: 6px;
+    }
+
+    .tile {
+        flex: 0 0 calc(100% / 7 - 6px);
+    }
+
+    header {
+        justify-content: center;
+        padding: 10px;
+    }
 }

@@ -109,40 +109,64 @@ function discardTile(index) {
     if (document.getElementById('generate-btn').classList.contains('highlight')) return;
     totalCount++;
     document.getElementById('total-count').textContent = totalCount;
+
     const baseShanten = getShanten(currentHand);
     const userDiscard = currentHand[index];
-    const analysisData = currentHand.map((tile, i) => {
+
+    // 全ての打牌パターンを計算
+    const allAnalysis = currentHand.map((tile, i) => {
         const nextHand = currentHand.filter((_, j) => i !== j);
         const nextShanten = getShanten(nextHand);
         const ukeire = (nextShanten === baseShanten) ? getUkeireDetails(nextHand) : null;
         return { tile, nextShanten, ukeire };
     });
-    const maxUkeire = Math.max(...analysisData.map(d => d.ukeire ? d.ukeire.totalCount : 0));
-    const userData = analysisData[index];
+
+    // 牌の種類ごとに集約（同じ牌なら結果は同じなので1つにまとめる）
+    const uniqueAnalysis = [];
+    const seenTiles = new Set();
+
+    allAnalysis.forEach(d => {
+        const tileId = `${d.tile.num}${d.tile.suit}`;
+        if (!seenTiles.has(tileId)) {
+            uniqueAnalysis.push(d);
+            seenTiles.add(tileId);
+        }
+    });
+
+    const maxUkeire = Math.max(...uniqueAnalysis.map(d => d.ukeire ? d.ukeire.totalCount : 0));
+    const userData = allAnalysis[index];
     const resultDiv = document.getElementById('result');
+
+    // 結果表示（上部のメッセージエリア）
     if (userData.nextShanten > baseShanten) {
         resultDiv.innerHTML = `<span style="color: #ff4444;">× 向聴戻り</span>`;
     } else {
         const isBest = userData.ukeire.totalCount === maxUkeire;
         if (isBest) correctCount++;
         document.getElementById('correct-score').textContent = correctCount;
+
         let st = isBest ? `<span style="color: #44ff44;">★ Excellent!</span>` : `<span style="color: #f1c40f;">▲ Good</span>`;
-        st += ` 打:<img src="img/${userDiscard.num}${userDiscard.suit}.png" style="height:35px; vertical-align:middle; margin:0 5px;"> `;
+        st += ` 打:<img src="img/${userDiscard.num}${userDiscard.suit}.png" style="height:45px; vertical-align:middle; margin:0 10px;"> `;
         st += `(${userData.ukeire.totalCount}枚) 有効牌: `;
-        st += userData.ukeire.tiles.map(t => `<img src="img/${t.num}${t.suit}.png" style="height:28px; vertical-align:middle;">`).join('');
+        st += userData.ukeire.tiles.map(t => `<img src="img/${t.num}${t.suit}.png" style="height:35px; vertical-align:middle; margin: 2px;">`).join('');
         resultDiv.innerHTML = st;
     }
+
+    // 解析テーブルの生成（重複カット版）
     let tableHtml = `<h3>打牌解析一覧</h3><table class="analysis-table"><tr><th>打牌</th><th>状態</th><th>受入</th><th>有効牌</th></tr>`;
-    analysisData.forEach(d => {
+
+    uniqueAnalysis.forEach(d => {
         const isBest = d.ukeire && d.ukeire.totalCount === maxUkeire;
         tableHtml += `<tr style="${isBest ? 'background: rgba(68,255,68,0.2); font-weight:bold;' : ''}">
-            <td><img src="img/${d.tile.num}${d.tile.suit}.png" style="height:40px;"></td>
-            <td>${d.nextShanten > baseShanten ? '<span style="color:red">向聴戻り</span>' : '維持'}</td>
+            <td><img src="img/${d.tile.num}${d.tile.suit}.png" style="height:60px;"></td> <td>${d.nextShanten > baseShanten ? '<span style="color:red">向聴戻り</span>' : '維持'}</td>
             <td>${d.ukeire ? d.ukeire.totalCount + '枚' : "-"}</td>
-            <td>${d.ukeire ? d.ukeire.tiles.map(t => `<img src="img/${t.num}${t.suit}.png" style="height:22px;">`).join('') : "-"}</td></tr>`;
+            <td class="ukeire-tiles-cell"> ${d.ukeire ? d.ukeire.tiles.map(t => `<img src="img/${t.num}${t.suit}.png" class="ukeire-tile-img">`).join('') : "-"}
+            </td></tr>`;
     });
+
     document.getElementById('analysis-area').innerHTML = tableHtml + `</table>`;
     document.querySelectorAll('.tile')[index].classList.add('discarded');
+
     const genBtn = document.getElementById('generate-btn');
     genBtn.classList.add('highlight');
     genBtn.textContent = "次の問題へ";
