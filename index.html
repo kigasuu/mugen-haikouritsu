@@ -3,27 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>無限・牌効率道場</title>
+    <title>無限・牌効率道場 | 麻雀の牌効率・何切るを無限に練習</title>
+    <meta name="description" content="麻雀の牌効率をマスターするための練習ツール。実戦で迷いやすい複合形や多面張の何切る問題を無限に生成。道場形式で繰り返し解くことで打牌判断力を劇的に向上させます。">
+    <meta name="keywords" content="麻雀,牌効率,何切る,麻雀練習,打牌判断,麻雀上達,牌効率道場">
+    
+    <meta property="og:title" content="無限・牌効率道場">
+    <meta property="og:description" content="牌効率を極める。実戦的な何切る問題を無限に解き続けよう。">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap" rel="stylesheet">
 </head>
-<body>
-    <div class="dojo-container">
+<body class="theme-green">
+    <div class="container">
         <header>
-            <h1 class="dojo-title">無限・牌効率道場</h1>
-            <div id="score-container">
-                正解数: <span id="correct-score">0</span>
+            <h1>無限・牌効率道場</h1>
+            <div class="controls">
+                <button id="theme-toggle">背景色切替</button>
+                <div class="score-board">
+                    正解: <span id="correct-score">0</span> / 挑戦: <span id="total-count">0</span>
+                </div>
             </div>
         </header>
 
         <main>
-            <div id="hand-display" class="hand"></div>
-            <div id="result"></div>
-        </main>
+            <div id="result" class="result-display">牌を選んで切ってください</div>
+            
+            <div id="hand-display" class="hand-flex">
+                </div>
 
-        <footer>
-            <button id="generate-btn">次 の 問 題 ⚡</button>
-        </footer>
+            <div id="analysis-area" class="analysis-section">
+                </div>
+
+            <div class="action-area">
+                <button id="generate-btn" class="primary-btn">問題を生成</button>
+            </div>
+        </main>
     </div>
     <script src="script.js"></script>
 </body>
